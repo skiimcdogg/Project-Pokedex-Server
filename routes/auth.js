@@ -40,6 +40,7 @@ router.post("/signup", (req, res, next) => {
         .then((newUserDocument) => {
           /* Login on signup */
           req.session.currentUser = newUserDocument._id;
+          console.log("email", newUserDocument.email)
           res.redirect("/api/auth/isLoggedIn");
         })
         .catch(next);

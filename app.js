@@ -46,10 +46,18 @@ const authRouter = require("./routes/auth");
 
 app.use("/api/auth", authRouter);
 
+const pokemonRouter = require("./routes/pokemon");
+
+app.use("/api/pokemons", pokemonRouter);
+
+const userRouter = require("./routes/user");
+
+app.use("/api/user", userRouter);
+
 // 404 Middleware
 app.use((req, res, next) => {
-  const error = new Error("Ressource not found.");
-  error.status = 404;
+  const err = new Error("Ressource not found.");
+  err.status = 404;
   next(err);
 });
 
