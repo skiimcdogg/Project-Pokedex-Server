@@ -6,17 +6,17 @@ const protectRoute = require("../middlewares/protectRoute");
 const protectAdmin = require("../middlewares/protectAdminRoute"); 
 const uploader = require("../config/cloudinaryConfig")
 
-router.get("/", protectRoute, (req, res, next) => {
-    User
-      .findOne({ _id: req.session.currentUser })
-      .populate("pokeFav pokeTeam")
-      .then((dbRes) => {
-        res.status(200).json(dbRes);
-      })
-      .catch((err) => {
-        next(err);
-      });
-  });
+// router.get("/", protectRoute, (req, res, next) => {
+//     User
+//       .findOne({ _id: req.session.currentUser })
+//       .populate("pokeFav pokeTeam")
+//       .then((dbRes) => {
+//         res.status(200).json(dbRes);
+//       })
+//       .catch((err) => {
+//         next(err);
+//       });
+//   });
 
   router.get("/edit/:id", protectRoute, (req, res, next) => {
     User

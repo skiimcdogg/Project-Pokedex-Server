@@ -8,7 +8,7 @@ const protectRoute = require("../middlewares/protectRoute");
 
 router.get("/", (req, res, next) => {
     var interval = {
-        limit: 48,
+        limit: 28,
         offset: 0
       }
     P.getPokemonsList(interval)
