@@ -83,4 +83,15 @@ router.post("/createFav", protectRoute, (req, res, next) => {
         })
         })
 
+    router.get("/types", (req, res, next) =>{
+        P.getTypesList()
+        .then((types) => {
+            console.log(types);
+            res.status(200).json(types);
+        })
+        .catch((err) => {
+            next(err)
+        })
+    })
+
 module.exports = router;
