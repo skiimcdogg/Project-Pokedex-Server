@@ -6,6 +6,17 @@ const Pokedex = require('pokedex-promise-v2');
 const P = new Pokedex();
 const protectRoute = require("../middlewares/protectRoute"); 
 
+
+router.get("/types", (req, res, next) => {
+    P.getTypesList()
+    .then((type) => {
+        res.status(200).json(type);
+    })
+    .catch((err) => {
+        next(err)
+    })
+})
+
 router.get("/", (req, res, next) => {
     var interval = {
         limit: 28,
@@ -25,15 +36,6 @@ router.get("/", (req, res, next) => {
     })
 })
 
-router.get("/:id", (req, res, next) => {
-    P.getPokemonByName(req.params.id)
-    .then((pokemon) => {
-        res.status(200).json(pokemon);
-    })
-    .catch((err) => {
-        next(err)
-    })
-})
 
 router.post("/createFav", protectRoute, (req, res, next) => {
     // req.body.types = req.body.types.split(",");
@@ -82,16 +84,16 @@ router.post("/createFav", protectRoute, (req, res, next) => {
             })
         })
         })
-
-    router.get("/types", (req, res, next) =>{
-        P.getTypesList()
-        .then((types) => {
-            console.log(types);
-            res.status(200).json(types);
+   
+        router.get("/:id", (req, res, next) => {
+            P.getPokemonByName(req.params.id)
+            .then((pokemon) => {
+                res.status(200).json(pokemon);
+            })
+            .catch((err) => {
+                next(err)
+            })
         })
-        .catch((err) => {
-            next(err)
-        })
-    })
+        
 
 module.exports = router;
