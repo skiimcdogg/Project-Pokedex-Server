@@ -113,6 +113,4 @@ const uploader = require("../config/cloudinaryConfig")
       });
   });
 
-
-
 module.exports = router;

@@ -6,7 +6,6 @@ const Pokedex = require('pokedex-promise-v2');
 const P = new Pokedex();
 const protectRoute = require("../middlewares/protectRoute"); 
 
-
 router.get("/types", (req, res, next) => {
     P.getTypesList()
     .then((type) => {
@@ -27,7 +26,6 @@ router.get("/", (req, res, next) => {
         const arr = pokemon.results.map(p => p.url)
         P.resource(arr)
         .then((dbRes) => {
-            console.log(dbRes)
             res.status(200).json(dbRes);
         })
     })
@@ -36,7 +34,6 @@ router.get("/", (req, res, next) => {
     })
 })
 
-
 router.post("/createFav", protectRoute, (req, res, next) => {
     // req.body.types = req.body.types.split(",");
     // req.body.stats = req.body.stats.split(",");
@@ -44,11 +41,8 @@ router.post("/createFav", protectRoute, (req, res, next) => {
     // req.body.moves = req.body.moves.split(",");
     const newPokemon = req.body; 
   
-    console.log("reqbody", newPokemon)
     Pokemon.create(newPokemon)
     .then((dbRes)=>{
-        console.log("dbresid", dbRes._id)
-        console.log("req session" ,req.session)
         const pokeId = dbRes._id
         User.findOneAndUpdate({ _id: req.session.currentUser }, { $push: {pokeFav: pokeId} }, { new: true })
         .then((dbRes2) => {
@@ -71,8 +65,6 @@ router.post("/createFav", protectRoute, (req, res, next) => {
         console.log("reqbody", newPokemon)
         Pokemon.create(newPokemon)
         .then((dbRes)=>{
-            console.log("dbresid", dbRes._id)
-            console.log("req session" ,req.session)
             const pokeId = dbRes._id
             User.findOneAndUpdate({ _id: req.session.currentUser }, { $push: {pokeTeam: pokeId} }, { new: true })
             .then((dbRes2) => {
@@ -95,5 +87,4 @@ router.post("/createFav", protectRoute, (req, res, next) => {
             })
         })
         
-
 module.exports = router;
