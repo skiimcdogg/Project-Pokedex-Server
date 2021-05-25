@@ -29,7 +29,7 @@ const uploader = require("../config/cloudinaryConfig")
       });
   });
 
-  router.patch("/edit/:id", protectRoute, uploader.single("avatar"), (req, res, next) => {
+  router.patch("/edit/:id", /*protectRoute,*/ uploader.single("avatar"), (req, res, next) => {
     const { pseudo, email, region, avatar } = req.body;
     const newUser = { ...req.body };
     if (!req.file) newUser.avatar = undefined;
