@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const uploader = require("./../config/cloudinaryConfig")
 
 const salt = 10;
 
@@ -24,8 +25,9 @@ router.post("/signin", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName } = req.body;
+router.post("/signup", uploader.single("avatar"), (req, res, next) => {
+  const { pseudo, region, email, password } = req.body;
+  // console.log("req.file",req);
 
   User.findOne({ email })
     .then((userDocument) => {
@@ -34,14 +36,16 @@ router.post("/signup", (req, res, next) => {
       }
 
       const hashedPassword = bcrypt.hashSync(password, salt);
-      const newUser = { email, lastName, firstName, password: hashedPassword };
-
+      const newUser = { pseudo, region, email, password: hashedPassword };
+      if (!req.file) newUser.avatar = undefined;
+      else newUser.avatar = req.file.path;
       User.create(newUser)
-        .then((newUserDocument) => {
-          /* Login on signup */
-          req.session.currentUser = newUserDocument._id;
-          console.log("email", newUserDocument.email)
-          res.redirect("/api/user");
+      .then((newUserDocument) => {
+        /* Login on signup */
+        req.session.currentUser = newUserDocument._id;
+          console.log(newUser);
+          // console.log("avatar", newUserDocument.avatar)
+          res.redirect("/api/auth/isLoggedIn");
         })
         .catch(next);
     })
