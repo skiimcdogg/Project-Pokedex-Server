@@ -35,10 +35,6 @@ router.get("/", (req, res, next) => {
 })
 
 router.post("/createFav", protectRoute, (req, res, next) => {
-    // req.body.types = req.body.types.split(",");
-    // req.body.stats = req.body.stats.split(",");
-    // req.body.base_stat = req.body.base_stat.split(",");
-    // req.body.moves = req.body.moves.split(",");
     const newPokemon = req.body; 
   
     Pokemon.create(newPokemon)
@@ -56,15 +52,12 @@ router.post("/createFav", protectRoute, (req, res, next) => {
     })
 
     router.post("/createTeam", protectRoute, (req, res, next) => {
-        // req.body.types = req.body.types.split(",");
-        // req.body.stats = req.body.stats.split(",");
-        // req.body.base_stat = req.body.base_stat.split(",");
-        // req.body.moves = req.body.moves.split(",");
         const newPokemon = req.body; 
       
         console.log("reqbody", newPokemon)
         Pokemon.create(newPokemon)
         .then((dbRes)=>{
+            console.log("dbres", dbRes);
             const pokeId = dbRes._id
             User.findOneAndUpdate({ _id: req.session.currentUser }, { $push: {pokeTeam: pokeId} }, { new: true })
             .then((dbRes2) => {
@@ -75,6 +68,10 @@ router.post("/createFav", protectRoute, (req, res, next) => {
                 next(err)
             })
         })
+        .catch((err) => {
+            next(err)
+        })
+
         })
    
         router.get("/:id", (req, res, next) => {

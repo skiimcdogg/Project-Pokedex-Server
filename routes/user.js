@@ -60,8 +60,17 @@ const uploader = require("../config/cloudinaryConfig")
   router.delete("/delete/:id/pokemon", protectRoute, (req, res, next) => {
     Pokemon
       .findByIdAndDelete(req.params.id)
-      .then(() => {
-        // res.redirect("/users");
+      .then((dbRes) => {
+        console.log(dbRes)
+        const pokeId = dbRes._id
+        User.findOneAndUpdate({ _id: req.session.currentUser }, { $push: {pokeFav: pokeId} }, { new: true })
+        .then((dbRes2) => {
+           console.log("DBRES2", dbRes2);
+        //    res.redirect("/users")
+        })
+        .catch((err) => {
+            next(err)
+        })
       })
       .catch((err) => {
         next(err);
