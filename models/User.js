@@ -14,6 +14,7 @@ const userSchema = new Schema({
   region: {
     type: String,
     enum: ["Kanto", "Johto", "Hoenn", "Sinnoh", "Unys", "Kalos", "Alola", "Galar"],
+    //default: "Kanto",
   },
   pokeFav: [{
       type: Schema.Types.ObjectId,

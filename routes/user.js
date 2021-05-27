@@ -37,7 +37,7 @@ const uploader = require("../config/cloudinaryConfig")
     User
       .findByIdAndUpdate(req.params.id, newUser)
       .then(() => {
-          console.log("coucou bébé", newUser);
+          console.log("NewUser", newUser);
         // res.redirect("/users");
         res.status(200).json(newUser);
       })
