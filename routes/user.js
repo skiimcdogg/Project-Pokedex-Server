@@ -39,7 +39,7 @@ router.get("/user", protectRoute,(req, res, next) => {
       .findByIdAndUpdate(req.params.id, newUser)
       .then(() => {
           console.log("NewUser", newUser);
-        // res.redirect("/users");
+          // res.redirect("/api/auth/isLoggedIn");
         res.status(200).json(newUser);
       })
       .catch((err) => {
