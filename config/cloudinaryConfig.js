@@ -1,7 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-require('dotenv').config()
+// require('dotenv').config()
 
 // giving access to your cloudinary account
 cloudinary.config({

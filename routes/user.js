@@ -4,7 +4,7 @@ const User = require("../models/User");
 const Pokemon = require("../models/Pokemon");
 const protectRoute = require("../middlewares/protectRoute");
 const protectAdmin = require("../middlewares/protectAdminRoute");
-const uploader = require("../config/cloudinaryConfig");
+const uploader = require("../config/cloudinaryConfig")
 
 router.get("/user", protectRoute, (req, res, next) => {
   User.findOne({ _id: req.session.currentUser })
@@ -20,18 +20,30 @@ router.get("/user", protectRoute, (req, res, next) => {
 
 router.patch(
   "/user/edit/:id",
-  protectRoute,
   uploader.single("avatar"),
+  // protectRoute,
+  
   (req, res, next) => {
-    const { pseudo, email, region, avatar } = req.body;
-    const newUser = { ...req.body };
-    if (!req.file) newUser.avatar = undefined;
-    else newUser.avatar = req.file.path;
-    User.findByIdAndUpdate(req.params.id, newUser)
-      .then(() => {
-        console.log("NewUser", newUser);
+    console.log("REQPARAMAS", req.params);
+    console.log("REQBODY", req.body);
+    console.log("req",req)
+    console.log("reqfile",req.file)
+    const { pseudo, email, region } = req.body;
+    const updatedUser = {
+      pseudo,
+      email,
+      region
+    }
+    if (req.file) {
+      updatedUser.avatar = req.file.path;
+    }
+    console.log("newUserbefore", updatedUser)
+
+    User.findByIdAndUpdate(req.params.id, updatedUser, { new: true })
+      .then((updatedDocument) => {
+        console.log("NewUserafter", updatedUser);
         // res.redirect("/api/auth/isLoggedIn");
-        res.status(200).json(newUser);
+        res.status(200).json(updatedDocument);
       })
       .catch((err) => {
         next(err);

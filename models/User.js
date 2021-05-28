@@ -5,7 +5,10 @@ const userSchema = new Schema({
   pseudo: String,
   email: { type: String, required: true },
   password: { type: String, required: true },
-  avatar: String,
+  avatar:{
+    type:String,
+    default:"https://image.pngaaa.com/966/1950966-middle.png"
+  },
   role: {
     type: String,
     enum: ["admin", "user"],
