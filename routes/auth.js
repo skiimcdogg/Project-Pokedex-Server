@@ -26,7 +26,7 @@ router.post("/signin", (req, res, next) => {
 });
 
 router.post("/signup", uploader.single("avatar"), (req, res, next) => {
-  const { pseudo, region, email, password } = req.body;
+  const { pseudo, region, email, password, role } = req.body;
   // console.log("req.file",req);
 
   User.findOne({ email })
@@ -36,14 +36,17 @@ router.post("/signup", uploader.single("avatar"), (req, res, next) => {
       }
 
       const hashedPassword = bcrypt.hashSync(password, salt);
-      const newUser = { pseudo, region, email, password: hashedPassword };
+      const newUser = { pseudo, region, email, password: hashedPassword ,role};
       if (!req.file) newUser.avatar = undefined;
       else newUser.avatar = req.file.path;
       User.create(newUser)
       .then((newUserDocument) => {
         /* Login on signup */
+        
         req.session.currentUser = newUserDocument._id;
-          console.log(newUser);
+        req.session.currentUserRole = newUserDocument.role;
+        
+          console.log(newUserDocument);
           // console.log("avatar", newUserDocument.avatar)
           res.redirect("/api/auth/isLoggedIn");
         })

@@ -52,7 +52,7 @@ app.use("/api/pokemons", pokemonRouter);
 
 const userRouter = require("./routes/user");
 
-app.use("/api/user", userRouter);
+app.use("/api", userRouter);
 
 // 404 Middleware
 app.use((req, res, next) => {

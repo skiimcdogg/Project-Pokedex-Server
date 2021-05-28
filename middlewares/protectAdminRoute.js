@@ -1,4 +1,5 @@
 module.exports = function protectPrivateRoute(req, res, next) {
-    if (req.session.currentuser.role === "admin") next();
-    else res.render("forbidden");
+    console.log(req.session.currentUserRole)
+    if (req.session.currentUserRole === "admin") next();
+    else console.log("error");
 };
