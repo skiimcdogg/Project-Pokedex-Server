@@ -25,9 +25,8 @@ router.post("/signin", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/signup", uploader.single("avatar"), (req, res, next) => {
-  const { pseudo, region, email, password, role } = req.body;
-  // console.log("req.file",req);
+router.post("/signup", (req, res, next) => {
+  const { pseudo, avatar, region, email, password, role } = req.body;
 
   User.findOne({ email })
     .then((userDocument) => {
@@ -36,9 +35,9 @@ router.post("/signup", uploader.single("avatar"), (req, res, next) => {
       }
 
       const hashedPassword = bcrypt.hashSync(password, salt);
-      const newUser = { pseudo, region, email, password: hashedPassword ,role};
-      if (!req.file) newUser.avatar = undefined;
-      else newUser.avatar = req.file.path;
+      const newUser = { pseudo, avatar, region, email, password: hashedPassword ,role};
+      // if (!req.file) newUser.avatar = undefined;
+      // else newUser.avatar = req.file.path;
       User.create(newUser)
       .then((newUserDocument) => {
         /* Login on signup */
@@ -54,6 +53,14 @@ router.post("/signup", uploader.single("avatar"), (req, res, next) => {
     })
     .catch(next);
 });
+
+router.post('/upload', uploader.single('avatar'), (req, res, next) => {
+  if(!req.file) {
+    next(new Error('Please choose a file'));
+    return;
+  }
+  res.json({ secure_url: req.file.path })
+})
 
 router.get("/isLoggedIn", (req, res, next) => {
   if (!req.session.currentUser)
