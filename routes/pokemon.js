@@ -26,6 +26,7 @@ router.get("/", (req, res, next) => {
         const arr = pokemon.results.map(p => p.url)
         P.resource(arr)
         .then((dbRes) => {
+            
             res.status(200).json(dbRes);
         })
     })
@@ -77,6 +78,7 @@ router.post("/createFav", protectRoute, (req, res, next) => {
         router.get("/:id", (req, res, next) => {
             P.getPokemonByName(req.params.id)
             .then((pokemon) => {
+                console.log("DB RES POKEMON",pokemon)
                 res.status(200).json(pokemon);
             })
             .catch((err) => {
