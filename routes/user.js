@@ -10,7 +10,7 @@ router.get("/user", protectRoute, (req, res, next) => {
   User.findOne({ _id: req.session.currentUser })
     .populate("pokeFav pokeTeam")
     .then((dbRes) => {
-      console.log(dbRes);
+      // console.log(dbRes);
       res.status(200).json(dbRes);
     })
     .catch((err) => {
@@ -18,16 +18,7 @@ router.get("/user", protectRoute, (req, res, next) => {
     });
 });
 
-router.patch(
-  "/user/edit/:id",
-  uploader.single("avatar"),
-  // protectRoute,
-  
-  (req, res, next) => {
-    console.log("REQPARAMAS", req.params);
-    console.log("REQBODY", req.body);
-    console.log("req",req)
-    console.log("reqfile",req.file)
+router.patch("/user/edit/:id", uploader.single("avatar"), protectRoute, (req, res, next) => {
     const { pseudo, email, region } = req.body;
     const updatedUser = {
       pseudo,
@@ -37,12 +28,11 @@ router.patch(
     if (req.file) {
       updatedUser.avatar = req.file.path;
     }
-    console.log("newUserbefore", updatedUser)
+    // console.log("newUserbefore", updatedUser)
 
     User.findByIdAndUpdate(req.params.id, updatedUser, { new: true })
       .then((updatedDocument) => {
-        console.log("NewUserafter", updatedUser);
-        // res.redirect("/api/auth/isLoggedIn");
+        // console.log("NewUserafter", updatedUser);
         res.status(200).json(updatedDocument);
       })
       .catch((err) => {
@@ -55,7 +45,6 @@ router.delete("/user/delete/:id", protectRoute, (req, res, next) => {
   User.findByIdAndDelete(req.params.id)
     .then(() => {
       console.log("user deleted");
-      // res.redirect("/");
     })
     .catch((err) => {
       next(err);
@@ -65,17 +54,17 @@ router.delete("/user/delete/:id", protectRoute, (req, res, next) => {
 router.delete("/user/deleteFav/:id/pokemon", protectRoute, (req, res, next) => {
   Pokemon.findByIdAndDelete(req.params.id)
     .then((dbRes) => {
-      console.log("1er then", dbRes);
+      // console.log("1er then", dbRes);
       const pokeId = dbRes._id;
       User.findOneAndUpdate(
         { _id: req.session.currentUser },
         { $pull: { pokeFav: pokeId } },
         { new: true }
       )
+      .populate("pokeFav")
         .then((dbRes2) => {
-          console.log("2nd then", dbRes2);
+          // console.log("2nd then", dbRes2);
           res.status(200).json(dbRes2);
-          //    res.redirect("/users")
         })
         .catch((err) => {
           next(err);
@@ -86,23 +75,20 @@ router.delete("/user/deleteFav/:id/pokemon", protectRoute, (req, res, next) => {
     });
 });
 
-router.delete(
-  "/user/deleteTeam/:id/pokemon",
-  protectRoute,
-  (req, res, next) => {
+router.delete("/user/deleteTeam/:id/pokemon", protectRoute, (req, res, next) => {
     Pokemon.findByIdAndDelete(req.params.id)
       .then((dbRes) => {
-        console.log(dbRes);
+        // console.log(dbRes);
         const pokeId = dbRes._id;
         User.findOneAndUpdate(
           { _id: req.session.currentUser },
           { $pull: { pokeTeam: pokeId } },
           { new: true }
         )
+        .populate("pokeTeam")
           .then((dbRes2) => {
-            console.log("DBRES2", dbRes2);
+            // console.log("DBRES2", dbRes2);
             res.status(200).json(dbRes2);
-            //    res.redirect("/users")
           })
           .catch((err) => {
             next(err);
@@ -115,9 +101,12 @@ router.delete(
 );
 
 router.patch("/user/edit/:id/pokemon", protectRoute, (req, res, next) => {
-  Pokemon.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => {
-      // res.redirect("/users");
+  const { name } = req.body;
+  const updatedPokemon = { name }
+  Pokemon.findByIdAndUpdate(req.params.id, updatedPokemon, { new: true })
+    .then((updatedPokemon) => {
+      // console.log("updatedPokemon", updatedPokemon);
+      res.status(200).json(updatedPokemon);
     })
     .catch((err) => {
       next(err);
