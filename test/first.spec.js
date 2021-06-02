@@ -23,6 +23,7 @@ describe('Tasks API', () => {
     
      describe('/GET pokemon', () => {
         it('it should GET all the pokemons', (done) => {
+            
           chai.request(server)
               .get('/api/pokemons')
               .end((err, res) => {
@@ -30,8 +31,10 @@ describe('Tasks API', () => {
                     res.body.should.be.a('array');
                     res.body.length.should.be.eql(28);
                 done();
+
+          
               });
-        });
+        }).timeout(10000);
     });
 
 
