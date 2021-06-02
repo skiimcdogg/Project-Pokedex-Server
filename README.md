@@ -15,7 +15,7 @@ We also were passionate about learning TDD and our goal is to test our entire AP
 
 To get our Pokemons, we used PokéAPI!
 
-[here](https://pokeapi.co/)
+You can find it[here](https://pokeapi.co/)
 
 
 ## Test our Pokedex!
