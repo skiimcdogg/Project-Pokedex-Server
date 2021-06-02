@@ -13,9 +13,7 @@ The Filters component was a wonderful challenge for us, as we wanted users to be
 We also were passionate about learning TDD and our goal is to test our entire API with Mocha.
 
 
-To get our Pokemons, we used PokéAPI!
-
-If you're curious, you can check it out [here](https://pokeapi.co/) 
+To get our Pokemons, we used PokéAPI! If you're curious, you can check it out [here](https://pokeapi.co/).
 
 
 ## Test our Pokedex!
