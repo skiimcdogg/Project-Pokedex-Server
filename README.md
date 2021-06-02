@@ -1,4 +1,6 @@
 # Project-Pokedex-Server 
 
-Test Claire
-ok.
+
+Welcome to our Pokedex!
+
+
