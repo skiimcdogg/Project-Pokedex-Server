@@ -85,5 +85,16 @@ router.post("/createFav", protectRoute, (req, res, next) => {
                 next(err)
             })
         })
+
+        router.get("/:id", (req, res, next) => {
+            P.getPokemonByName(req.params.id)
+            .then((pokemon) => {
+                console.log("DB RES POKEMON",pokemon)
+                res.status(200).json(pokemon);
+            })
+            .catch((err) => {
+                next(err)
+            })
+        })
         
 module.exports = router;
