@@ -18,7 +18,7 @@ router.get("/types", (req, res, next) => {
 
 router.get("/", (req, res, next) => {
     var interval = {
-        limit: 28,
+        limit: 50,
         offset: 0
       }
     P.getPokemonsList(interval)
