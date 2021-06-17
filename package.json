@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
-    "test": "mocha"
+    "test": "mocha",
+    "build-react": "echo ---- creating react build --- && cd ../Project-Pokedex-Client  && npm install && npm run build && cp -r ./build/* ../Project-Pokedex-Server/public/ && cd .."
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
