@@ -33,10 +33,10 @@ app.use(
 );
 
 // Test to see if user is logged In before getting into any router.
-app.use(function (req, res, next) {
-  console.log("User in session =>", req.session.currentUser);
-  next();
-});
+// app.use(function (req, res, next) {
+//   console.log("User in session =>", req.session.currentUser);
+//   next();
+// });
 
 /**
  * Routes
@@ -61,6 +61,9 @@ app.use((req, res, next) => {
   next(err);
 });
 
+app.use(require("./middlewares/protectRoute"));
+app.use(require("./middlewares/protectAdminRoute"));
+
 // Error handler middleware
 // If you pass an argument to your next function in any of your routes or middlewares
 // You will end up in this middleware
@@ -76,13 +79,8 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('/*', function (req, res) {
-   res.sendFile(path.join(__dirname, 'public', 'index.html'));
- });
-
 // app.use((req, res, next) => {
-//    If no routes match, send them the React HTML.
+//   // If no routes match, send them the React HTML.
 //   res.sendFile(__dirname + "../public/index.html");
 // });
 
