@@ -54,6 +54,13 @@ const userRouter = require("./routes/user");
 
 app.use("/api", userRouter);
 
+if (process.env.NODE_ENV === "production") {
+  app.use("*", (req, res, next) => {
+    // If no routes match, send them the React HTML.
+    res.sendFile(__dirname + "/public/index.html");
+  });
+}
+
 // 404 Middleware
 app.use((req, res, next) => {
   const err = new Error("Ressource not found.");
@@ -84,12 +91,12 @@ app.use((err, req, res, next) => {
 //   res.sendFile(__dirname + "../public/index.html");
 // });
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, './public/index.html'), function(err) {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
+// app.get('/*', function(req, res) {
+//   res.sendFile(path.join(__dirname, './public/index.html'), function(err) {
+//     if (err) {
+//       res.status(500).send(err)
+//     }
+//   })
+// })
 
 module.exports = app;
