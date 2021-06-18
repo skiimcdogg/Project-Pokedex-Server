@@ -86,17 +86,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-// app.use((req, res, next) => {
-//   // If no routes match, send them the React HTML.
-//   res.sendFile(__dirname + "../public/index.html");
-// });
-
-// app.get('/*', function(req, res) {
-//   res.sendFile(path.join(__dirname, './public/index.html'), function(err) {
-//     if (err) {
-//       res.status(500).send(err)
-//     }
-//   })
-// })
-
 module.exports = app;
