@@ -27,6 +27,7 @@ app.use(
   session({
     store: new MongoStore({ mongooseConnection: mongoose.connection }), // Persist session in database.
     secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 600000},
     resave: true,
     saveUninitialized: true,
   })
